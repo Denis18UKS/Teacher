@@ -14,7 +14,8 @@
 </head>
 <body>
 
-<?php include "nav.php" ?>
+
+<? include "nav.php"; ?>
 
 <header>
     <div id="container-header-text">
@@ -26,7 +27,7 @@
             <div id="cont-h3">
                 <h3>Тут вы найдёте различные методические материалы и программы</h3>
                 <h3>Также вы можете посмотреть мои грамоты и достижения</h3>
-                <a href="https://vk.com/id107319327" style="color: white; text-decoration: none;"><h1>Нажмите сюда</h1></a>
+                <a href="https://vk.com/id107319327" style="color: white; "><h1>Нажмите сюда</h1></a>
             </div>
         </div>
     </div>
@@ -79,9 +80,9 @@
     </section>
 
 <section id="materials">
-    <h1 class="metodichki">Методички</h1>
 
     <section id="metodichki">
+        <h1 class="metodichki">Методички</h1>
         <?php
             include "connectDB.php";
             
@@ -92,9 +93,22 @@
             if ($result->num_rows > 0) {
                 // Вывод информации о методичке
                 while($row = $result->fetch_assoc()) {
-                    echo "Название методички: " . $row["met_title"] . "<br>";
-                    echo "Описание методички: " . $row["met_description"] . "<br>";
-                    echo "<a href='" . $row["met_file"] . "' download><button class = 'btn btn-primary'>Скачать методичку</button></a>";
+                    echo "<div id = 'card'>";
+                    echo "<h3>Название методички: </h3>";
+                    echo "<h4>" . $row['met_title'] . "</h4>";
+                    echo "<h3>Описание методички: </h3> ";
+                    echo "<h4>" . $row['met_description'] . "</h4>";
+                    if ($_SESSION) {
+                        if (isset($_GET['type']) && $_GET['type'] === "teacher") {
+                            echo "<a href='" . $row["met_file"] . "' download><button class = 'btn btn-primary'>Скачать методичку</button></a>";
+                        } else {
+                            echo "<a href='" . $row["met_file"] . "' download><button class = 'btn btn-primary'>Скачать методичку</button></a>";
+                        }
+                    } else {
+                        echo "<i><h3>Для скачивания или поиска файлов войдите в аккаунт</h3></i>";
+                    }
+                    echo "</div>";
+
                 }
             } else {
                 echo "Нет данных о методичке";
@@ -108,65 +122,62 @@
     <!-- программы -->
 
 
-    <h1 class="programs">Программы</h1>
 
     <section id="programs">
-    
-        <?php
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $dbname = "teachers";
+        <h1 class="programs">Программы</h1>
 
-            $connect = new mysqli($servername, $username, $password, $dbname);
-
-            if ($connect->connect_error) {
-                die("Ошибка подключения: " . $connect->connect_error);
-            }
-
-            $sql = "SELECT * FROM `Programms`";
-            $result = $connect->query($sql);
-
-            if ($result === false) {
-                die("Ошибка выполнения запроса: " . $connect->error);
-            }
-
-            if (isset($_POST['programs_id'])) {
-                $selected_programs_id = $_POST['programs_id'];
-            }
+    <?php
+            include "connectDB.php";
             
-
+            // Запрос к базе данных для получения информации о методичке
+            $sql = "SELECT * FROM Programms";
+            $result = $connect->query($sql);
+            
             if ($result->num_rows > 0) {
+                // Вывод информации о методичке
                 while($row = $result->fetch_assoc()) {
-                    echo "<div id='tarif-card' style='width: 20rem;'>";
-                    echo "<img src='../materials/programs/" . $row['programs_file'] . "' class='card-img-top' alt=''>";
-                    echo "<div class='card-body'>";
-                    echo "<h1 class='card-title'>" . $row['programs_titke'] . "</h1>";        
-                    echo "<p class='card-text-description' style='display: none;' id='description-" . $row['id'] . "'>" . $row['description_tarif'] . "</p>";
-                    echo "<div class='price-and-btn-content'>";
-                    echo "<button onclick='displayMore(" . $row['id'] . ")' class='btn btn-primary' id='button-more-" . $row['id'] . "'>Читать подробнее</button>";
-                    echo "</div>";
-                    echo "</div>";
+                    echo "<div id = 'card'>";
+                    echo "<h3>Название программы: </h3>"; 
+                    echo "<h4>" . $row["program_title"] . "</h4>";
+                    echo "<h3>Описание программы: </h3>";
+                    echo "<h4>" . $row["program_description"] . "</h4>";
+
+                        include "session.php";
+
+                        if ($_SESSION) {
+                            if (isset($_GET['type']) && $_GET['type'] === "teacher") {
+                                echo "<a href='" . $row["program_file"] . "' download><button class='btn btn-primary'>Скачать программу</button></a>";
+                            } else {
+                                echo "<a href='" . $row["program_file"] . "' download><button class='btn btn-primary'>Скачать программу</button></a>";
+                            }
+                        } else {
+                        echo "<i><h3>Для скачивания или поиска файлов войдите в аккаунт</h3></i>";
+                        }
                     echo "</div>";
                 }
-
-                
-
             } else {
-                echo "<i>Материалов пока нет<i>";
+                echo "Нет данных о программах";
             }
-
+            
             $connect->close();
-        ?>
+            ?>
     </section>
 </section>
 
 </main>
 
+<footer>
+    <p class="mail-Irina">Почта : <a href="https://my.mail.ru/mail/ik13574/photo">Ik13574@mail.ru</a></p>
+    <div id="footer-content">
+        <p>&copy; 2022 @dkarpov2003. Все права защищены.</p>
+    </div>            
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
 </body>
 </html>
 
-<script>
-</script>

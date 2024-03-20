@@ -23,8 +23,6 @@
             if ($_SESSION) {
                 if (isset($_GET['type']) && $_GET['type'] === "teacher") {
                     echo '<li><a href="admin/admin.php">Управление</a></li>';
-                } else {
-                    echo '<li><a href="user_profile/profile.php">Личный кабинет</a></li>';
                 }
             } else {
                 echo '<li><a href="reg.php">Регистрация</a></li>';
@@ -35,10 +33,22 @@
             <li><a href="#materials">Материалы</a></li>
         </ul>
 
-        <form action="search.php" id="Searching" method="post">
+        <!-- <form action="search.php" id="Searching" method="post">
             <input type="search" name="search" id="search" placeholder="Поиск" required>
             <input type="submit" value="Поиск" id="sub-searching">
-        </form>
+        </form> -->
+
+
+        <?php
+            include "session.php";
+
+            if ($_SESSION) {
+                echo "<form action='search.php' id='Searching' method='post'>";
+                echo "<input type='search' name='search' id='search' placeholder='Поиск' required>";
+                echo "<input type='submit' value='Поиск' id='sub-searching'>";
+                echo "</form>";
+            }
+        ?>
 
         <ul class="nav-list">
 

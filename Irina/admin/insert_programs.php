@@ -9,7 +9,7 @@
 
         // Если файл был успешно загружен
         if ($fileError === 0) {
-            $fileDestination = '../materials/metodichki/' . $fileName;
+            $fileDestination = '../materials/programs/' . $fileName;
             move_uploaded_file($fileTmpName, $fileDestination);
             
             // Подключение к базе данных
@@ -26,12 +26,12 @@
             $description = $connect->real_escape_string($_POST['description']);
 
             // SQL запрос для вставки данных в базу данных
-            $sql = "INSERT INTO metodichki (met_title, met_description, met_file) VALUES ('$title', '$description', '$fileDestination')";
+            $sql = "INSERT INTO Programms (program_title, program_description, program_file) VALUES ('$title', '$description', '$fileDestination')";
 
             if ($connect->query($sql) === TRUE) {
-                echo "<script>location.href='admin.php'</script>";
+                echo "<script>location.href='control-programs.php'</script>";
             } else {
-                echo "Ошибка при добавлении методички: " . $connect->error;
+                echo "Ошибка при добавлении программы: " . $connect->error;
             }
 
             $connect->close();

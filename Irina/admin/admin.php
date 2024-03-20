@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет админа</title>
+    <title>Управление</title>
     <link rel="stylesheet" href="../css/admin.css">
     <script src="/js/admin_panel.js" defer></script>
     <script src="/js/save-choose.js" defer></script>
 </head>
 <body>
     <div class="sidebar">
-        <a href="#" id="met-link">Управление методичками</a>
-        <a href="#" id="programs-link">Управление программами</a>
-        <a href="../exit.php" id="logout-link">Выйти</a>
+        <a href="admin.php" id="add-met-link">Управление методичками</a>
+        <a href="control-programs.php" id="add-programs-link">Управление программами</a>
+        <a href="../" id="logout-link">На главную</a>
     </div>
 
-
     <div class="content" id="content-tariffs">
-        <!-- Контент для управления тарифами -->
+        <!-- Контент для управления методичками -->
         <h2>Управление методичками</h2>
         <div class="form-container">
             <h2>Добавить методичку</h2>
@@ -47,9 +46,9 @@
             ?>
                     <div id="materialsInfo">
                         <p>Название: <? echo $met['met_title'] ?> </p>
-                        <p>Описание: <? echo $met['met_descrip'] ?> </p>
+                        <p>Описание: <? echo $met['met_description'] ?> </p>
                         <div id="control-materials">
-                            <a href="remove-met.php" class="remove">Удалить</a>
+                        <a href="remove-met.php?met_id=<?= $met['id'] ?>" class="remove">Удалить</a>
                         </div>
                     <!-- // Другие поля тарифа, которые нужно вывести -->
                     </div>
@@ -57,33 +56,6 @@
                 }
             } else {
                 echo "Методички отсутствуют.";
-            }
-        ?>
-    </div>
-
-    <div class="content" id="content-users" style="display: none;">
-        <!-- Контент для управления пользователями -->
-        <h2>Управление программами</h2>
-        <?php
-            include("../connectDB.php");
-            $user_control = "SELECT * FROM `programms`";
-            $user_result = mysqli_query($connect, $user_control);
-
-            if (mysqli_num_rows($user_result) > 0) {
-                while ($user = mysqli_fetch_assoc($user_result)) {
-                    echo "<p>Фамилия: " . $user['surname'] . "</p>";
-                    echo "<p>Имя: " . $user['name'] . "</p>";
-                    echo "<p>Email: " . $user['phone'] . "</p>";
-                    echo "<p>Пароль: " . $user['password'] . "</p>";
-                    echo "<p>Адрес: " . $user['email'] . "</p>";
-                    echo "<p>Дата Регистрации: " . $user['reg-time'] . "</p>";
-                    // echo "<a href = 'remove-user.php'></a>";
-                    // Другие поля пользователя, которые нужно вывести
-                    echo "<hr>";
-
-                }
-            } else {
-                echo "Программы отсутствуют";
             }
         ?>
     </div>
